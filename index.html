@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>East Enders Ticats — Player Roster Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0A0A0A;
+    --charcoal: #161616;
+    --surface: #1d1d1d;
+    --gold: #FFB81C;
+    --bright-gold: #FFD200;
+    --white: #FFFFFF;
+    --muted: #8a8a8a;
+    --border: #2c2c2c;
+    --danger: #D7263D;
+    --radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--black);
+    background-image:
+      radial-gradient(circle at 15% 0%, rgba(255,184,28,0.10), transparent 40%),
+      radial-gradient(circle at 85% 100%, rgba(255,184,28,0.06), transparent 45%);
+    background-attachment: fixed;
+    color: var(--white);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 32px 16px 64px;
+    line-height: 1.5;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 620px;
+    background: var(--charcoal);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+  }
+
+  .header {
+    position: relative;
+    padding: 40px 36px 32px;
+    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+    border-bottom: 3px solid var(--gold);
+    overflow: hidden;
+  }
+  .header::after {
+    content: "";
+    position: absolute;
+    top: -50%; right: -10%;
+    width: 240px; height: 240px;
+    background: radial-gradient(circle, rgba(255,184,28,0.18), transparent 70%);
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold);
+    padding: 4px 12px;
+    border-radius: 3px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: clamp(28px, 6vw, 40px);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.05;
+  }
+  .header h1 .gold { color: var(--gold); }
+  .header p {
+    color: var(--muted);
+    margin-top: 10px;
+    font-size: 15px;
+    max-width: 90%;
+  }
+
+  form { padding: 32px 36px 12px; }
+
+  .row { display: flex; gap: 16px; }
+  .row .field { flex: 1; }
+
+  .field { margin-bottom: 22px; }
+
+  label {
+    display: block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  label .req { color: var(--gold); margin-left: 2px; }
+
+  input, select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 13px 14px;
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  input::placeholder { color: #5c5c5c; }
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: #242424;
+    box-shadow: 0 0 0 3px rgba(255,184,28,0.15);
+  }
+  input[type="date"] { color-scheme: dark; }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23FFB81C' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    cursor: pointer;
+  }
+  select:invalid { color: #5c5c5c; }
+
+  .hint { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+  .submit-btn {
+    width: 100%;
+    margin: 10px 0 28px;
+    padding: 16px;
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    border-radius: 8px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.08s, box-shadow 0.18s;
+    box-shadow: 0 6px 20px rgba(255,184,28,0.25);
+  }
+  .submit-btn:hover:not(:disabled) {
+    background: var(--bright-gold);
+    box-shadow: 0 8px 28px rgba(255,184,28,0.4);
+  }
+  .submit-btn:active:not(:disabled) { transform: translateY(1px); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .status {
+    text-align: center;
+    padding: 0 36px 28px;
+    font-size: 15px;
+    display: none;
+  }
+  .status.show { display: block; }
+  .status.success { color: var(--gold); }
+  .status.error { color: var(--danger); }
+
+  .success-panel {
+    display: none;
+    padding: 56px 36px;
+    text-align: center;
+  }
+  .success-panel.show { display: block; }
+  .success-panel .check {
+    width: 72px; height: 72px;
+    margin: 0 auto 24px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .success-panel .check svg { width: 36px; height: 36px; }
+  .success-panel h2 {
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+  .success-panel p { color: var(--muted); margin-bottom: 24px; }
+  .success-panel button {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 11px 26px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.18s, color 0.18s;
+  }
+  .success-panel button:hover { background: var(--gold); color: var(--black); }
+
+  .footer {
+    text-align: center;
+    padding: 18px 36px 28px;
+    border-top: 1px solid var(--border);
+    color: #555;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 480px) {
+    .row { flex-direction: column; gap: 0; }
+    .header, form, .footer { padding-left: 22px; padding-right: 22px; }
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <span class="badge">U16AA &middot; 2026 Season</span>
+      <h1>Toronto East Enders<br><span class="gold">Ticats</span> Roster</h1>
+      <p>Players, fill in your details below. This feeds the official team roster.</p>
+    </div>
+
+    <form id="rosterForm">
+      <div class="row">
+        <div class="field">
+          <label for="firstName">First Name <span class="req">*</span></label>
+          <input type="text" id="firstName" name="firstName" placeholder="Connor" required>
+        </div>
+        <div class="field">
+          <label for="lastName">Last Name <span class="req">*</span></label>
+          <input type="text" id="lastName" name="lastName" placeholder="McdAvid" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="jersey">Jersey Number <span class="req">*</span></label>
+          <input type="number" id="jersey" name="jersey" placeholder="97" min="0" max="99" required>
+        </div>
+        <div class="field">
+          <label for="hand">Shooting Hand <span class="req">*</span></label>
+          <select id="hand" name="hand" required>
+            <option value="" disabled selected>Select…</option>
+            <option value="Left">Left</option>
+            <option value="Right">Right</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="height">Height <span class="req">*</span></label>
+          <input type="text" id="height" name="height" placeholder="5'11&quot; / 180 cm" required>
+        </div>
+        <div class="field">
+          <label for="weight">Weight <span class="req">*</span></label>
+          <input type="text" id="weight" name="weight" placeholder="165 lb / 75 kg" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="favPlayer">Favourite Player</label>
+        <input type="text" id="favPlayer" name="favPlayer" placeholder="Sidney Crosby">
+      </div>
+
+      <div class="field">
+        <label for="birthdate">Birthdate <span class="req">*</span></label>
+        <input type="date" id="birthdate" name="birthdate" required>
+      </div>
+
+      <div class="field">
+        <label for="birthplace">Birthplace <span class="req">*</span></label>
+        <input type="text" id="birthplace" name="birthplace" placeholder="City, Province, Country" required>
+        <div class="hint">Format: City, Province, Country</div>
+      </div>
+
+      <div class="field">
+        <label for="hometown">Hometown <span class="req">*</span></label>
+        <input type="text" id="hometown" name="hometown" placeholder="Scarborough, ON" required>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Submit to Roster</button>
+    </form>
+
+    <div class="status" id="status"></div>
+
+    <div class="success-panel" id="successPanel">
+      <div class="check">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <h2>You're on the roster</h2>
+      <p>Your information was submitted successfully. Thanks!</p>
+      <button onclick="resetForm()">Submit another player</button>
+    </div>
+
+    <div class="footer">TORONTO EAST ENDERS TICATS &middot; PLAYER INFORMATION</div>
+  </div>
+
+<script>
+  // ===================================================================
+  //  PASTE YOUR APPS SCRIPT WEB APP URL BETWEEN THE QUOTES BELOW
+  // ===================================================================
+  const SCRIPT_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+
+  const form = document.getElementById('rosterForm');
+  const btn = document.getElementById('submitBtn');
+  const status = document.getElementById('status');
+  const successPanel = document.getElementById('successPanel');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    if (SCRIPT_URL === "https://script.google.com/macros/s/AKfycbxeHbJF_ULKNE3lgqFkhZHZZrD2eK-B8nq5w6Pv3Ni6RpHK518zmmhWoVwO3Pw9yqfj-g/exec") {
+      showStatus("Setup needed: the form's script URL hasn't been added yet.", "error");
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Submitting…";
+    status.className = "status";
+
+    const data = new FormData(form);
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: data
+      });
+      // no-cors gives an opaque response, so we treat reaching this point as success
+      form.style.display = "none";
+      successPanel.classList.add("show");
+    } catch (err) {
+      showStatus("Something went wrong. Please try again or contact your team manager.", "error");
+      btn.disabled = false;
+      btn.textContent = "Submit to Roster";
+    }
+  });
+
+  function showStatus(msg, type) {
+    status.textContent = msg;
+    status.className = "status show " + type;
+  }
+
+  function resetForm() {
+    form.reset();
+    form.style.display = "block";
+    successPanel.classList.remove("show");
+    btn.disabled = false;
+    btn.textContent = "Submit to Roster";
+    status.className = "status";
+  }
+</script>
+</body>
+</html>
